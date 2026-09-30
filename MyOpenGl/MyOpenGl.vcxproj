@@ -106,14 +106,15 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GLEW_STATIC</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies/ImGui;$(ProjectDir)Dependencies/stb_image;$(ProjectDir)Dependencies/GLEW;$(ProjectDir)/src/ControlData;$(ProjectDir)/src/Test;$(ProjectDir)Dependencies/GLFW;$(ProjectDir)Dependencies</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)Dependencies;$(ProjectDir)Dependencies/GLFW/lib;$(ProjectDir)Dependencies/GLEW/lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glew32s.lib;glfw3.lib</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glew32s.lib;glfw3.lib;$(CoreLibraryDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -122,8 +123,9 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GLEW_STATIC</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies/ImGui;$(ProjectDir)Dependencies/stb_image;$(ProjectDir)Dependencies/GLEW;$(ProjectDir)/src/ControlData;$(ProjectDir)/src/Test;$(ProjectDir)Dependencies/GLFW;$(ProjectDir)Dependencies</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -131,10 +133,45 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)Dependencies;$(ProjectDir)Dependencies/GLFW/lib;$(ProjectDir)Dependencies/GLEW/lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glew32s.lib;glfw3.lib</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glew32s.lib;glfw3.lib;$(CoreLibraryDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\ControlData\IndexBuffer.cpp" />
+    <ClCompile Include="src\ControlData\LayoutBuffer.cpp" />
+    <ClCompile Include="src\ControlData\Maths.cpp" />
+    <ClCompile Include="src\ControlData\Renderer.cpp" />
+    <ClCompile Include="src\ControlData\Shader.cpp" />
+    <ClCompile Include="src\ControlData\Texture.cpp" />
+    <ClCompile Include="src\ControlData\Vao.cpp" />
+    <ClCompile Include="src\ControlData\VertexBuffer.cpp" />
+    <ClCompile Include="src\main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Dependencies\GLEW\eglew.h" />
+    <ClInclude Include="Dependencies\GLEW\glew.h" />
+    <ClInclude Include="Dependencies\GLEW\glxew.h" />
+    <ClInclude Include="Dependencies\GLEW\wglew.h" />
+    <ClInclude Include="Dependencies\GLFW\glfw3.h" />
+    <ClInclude Include="Dependencies\GLFW\glfw3native.h" />
+    <ClInclude Include="src\ControlData\IndexBuffer.h" />
+    <ClInclude Include="src\ControlData\LayoutBuffer.h" />
+    <ClInclude Include="src\ControlData\Maths.h" />
+    <ClInclude Include="src\ControlData\Renderer.h" />
+    <ClInclude Include="src\ControlData\Shader.h" />
+    <ClInclude Include="src\ControlData\Texture.h" />
+    <ClInclude Include="src\ControlData\Vao.h" />
+    <ClInclude Include="src\ControlData\Vertex.h" />
+    <ClInclude Include="src\ControlData\VertexBuffer.h" />
+    <ClInclude Include="src\Test\Debug.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="Dependencies\GLEW\lib\glew32.lib" />
+    <Library Include="Dependencies\GLEW\lib\glew32s.lib" />
+    <Library Include="Dependencies\GLFW\lib\glfw3.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\shader\Shader.shader" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
