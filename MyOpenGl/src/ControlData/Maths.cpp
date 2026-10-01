@@ -104,7 +104,7 @@ namespace MyGl
     }
 
 
-    Mat4& Mat4::Identity(float diagonal = 1.0f)
+    Mat4& Mat4::Identity(float diagonal)
     {
         for (int i = 0; i < 16; ++i) Elements[i] = 0.0f;
         Columns[0].x = diagonal;
@@ -167,6 +167,17 @@ namespace MyGl
         Columns[2].z = e;
         Columns[3] = { b, d, f, 1.0f };
 
+        return *this;
+    }
+    Mat4& Mat4::Perspective(float FOVx, float FOVy, float near)
+    {
+        Identity(1.0f);
+
+        Columns[0].x = FOVx;
+        Columns[1].y = FOVy;
+        Columns[2].z = near;
+        Columns[2].w = -1;
+        Columns[3].w = 0;
         return *this;
     }
 }

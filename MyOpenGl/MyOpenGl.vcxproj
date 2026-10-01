@@ -137,6 +137,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Dependencies\ImGui\imgui.cpp" />
+    <ClCompile Include="Dependencies\ImGui\imgui_demo.cpp" />
+    <ClCompile Include="Dependencies\ImGui\imgui_draw.cpp" />
+    <ClCompile Include="Dependencies\ImGui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="Dependencies\ImGui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="Dependencies\ImGui\imgui_tables.cpp" />
+    <ClCompile Include="Dependencies\ImGui\imgui_widgets.cpp" />
+    <ClCompile Include="Dependencies\stb_image\stb_image.cpp" />
     <ClCompile Include="src\ControlData\IndexBuffer.cpp" />
     <ClCompile Include="src\ControlData\LayoutBuffer.cpp" />
     <ClCompile Include="src\ControlData\Maths.cpp" />
@@ -146,6 +154,7 @@
     <ClCompile Include="src\ControlData\Vao.cpp" />
     <ClCompile Include="src\ControlData\VertexBuffer.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Test\Object.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dependencies\GLEW\eglew.h" />
@@ -154,6 +163,16 @@
     <ClInclude Include="Dependencies\GLEW\wglew.h" />
     <ClInclude Include="Dependencies\GLFW\glfw3.h" />
     <ClInclude Include="Dependencies\GLFW\glfw3native.h" />
+    <ClInclude Include="Dependencies\ImGui\imconfig.h" />
+    <ClInclude Include="Dependencies\ImGui\imgui.h" />
+    <ClInclude Include="Dependencies\ImGui\imgui_impl_glfw.h" />
+    <ClInclude Include="Dependencies\ImGui\imgui_impl_opengl3.h" />
+    <ClInclude Include="Dependencies\ImGui\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="Dependencies\ImGui\imgui_internal.h" />
+    <ClInclude Include="Dependencies\ImGui\imstb_rectpack.h" />
+    <ClInclude Include="Dependencies\ImGui\imstb_textedit.h" />
+    <ClInclude Include="Dependencies\ImGui\imstb_truetype.h" />
+    <ClInclude Include="Dependencies\stb_image\stb_image.h" />
     <ClInclude Include="src\ControlData\IndexBuffer.h" />
     <ClInclude Include="src\ControlData\LayoutBuffer.h" />
     <ClInclude Include="src\ControlData\Maths.h" />
@@ -164,6 +183,8 @@
     <ClInclude Include="src\ControlData\Vertex.h" />
     <ClInclude Include="src\ControlData\VertexBuffer.h" />
     <ClInclude Include="src\Test\Debug.h" />
+    <ClInclude Include="src\Test\LoadData.h" />
+    <ClInclude Include="src\Test\Object.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="Dependencies\GLEW\lib\glew32.lib" />
@@ -171,6 +192,8 @@
     <Library Include="Dependencies\GLFW\lib\glfw3.lib" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="res\asset\indices.ind" />
+    <None Include="res\asset\vertices.ver" />
     <None Include="res\shader\Shader.shader" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

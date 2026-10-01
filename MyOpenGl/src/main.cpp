@@ -7,7 +7,12 @@
 #include "LayoutBuffer.h"
 #include "Shader.h"
 #include "Renderer.h"
+#include "Maths.h"
 #include<iostream>
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
+#include "Object.h"
 using namespace MyGl;
 int main()
 {
@@ -18,7 +23,7 @@ int main()
         return -1;
 
 
-    window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
+    window = glfwCreateWindow(1920, 1080, "Hello World", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
@@ -32,44 +37,67 @@ int main()
         return -1;
     }
 
-    Vertex vertices[4] = {
-        // Top-Left (Trên - Trái)
-        { {-0.5f,  0.5f, 0.0f, 1.0f}, {1.0f, 0.0f, 0.0f, 1.0f}, {0.0f, 1.0f} },
+    ///////////////////////////////////////////////////////////////////////
+    // IMGUI SETUPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP!!!!!!!!!!!!!!!!!!!!!!!
+    // ==========================================
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    ImGui::StyleColorsClassic();
 
-        // Bottom-Left (Dưới - Trái)
-        { {-0.5f, -0.5f, 0.0f, 1.0f}, {0.0f, 1.0f, 0.0f, 1.0f}, {0.0f, 0.0f} },
+    const char* glsl_version = "#version 330"; // Hoặc #version 130 tùy bản OpenGL
+    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    ImGui_ImplOpenGL3_Init(glsl_version);
+    // ==========================================
+    //////////////////////////////////////////////////////////////////////////////
 
-        // Bottom-Right (Dưới - Phải)
-        { { 0.5f, -0.5f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f, 1.0f}, {1.0f, 0.0f} },
+   
+    std::shared_ptr<Renderer> renderer = std::make_shared<Renderer>();
 
-        // Top-Right (Trên - Phải)
-        { { 0.5f,  0.5f, 0.0f, 1.0f}, {1.0f, 1.0f, 0.0f, 1.0f}, {1.0f, 1.0f} }
-    };
+    //renderer.get()->EnableBlend();
+    //renderer.get()->SetBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    renderer.get()->EnableDepthTest();
 
-    // Danh sách Index để ghép 4 đỉnh thành 2 tam giác (tạo thành hình vuông)
-    unsigned int indices[6] = {
-        0, 1, 2,  // Tam giác thứ nhất (Top-Left -> Bottom-Left -> Bottom-Right)
-        2, 3, 0   // Tam giác thứ hai (Bottom-Right -> Top-Right -> Top-Left)
-    };
-    
-    VertexBuffer vbo(vertices,sizeof(vertices));
-    IndexBuffer ibo(indices, 6);
-    LayoutBuffer layout;
-    layout.AddLayout(GL_FLOAT, 4, GL_FALSE);
-    layout.AddLayout(GL_FLOAT, 4, GL_FALSE);
-    layout.AddLayout(GL_FLOAT, 2, GL_FALSE);
-    Vao vao;
-    vao.AddData(vbo, ibo, layout);
-    Shader shader("res/shader/Shader.shader");
-    Renderer renderer;
-    renderer.EnableBlend();
-    renderer.SetBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
+    Mat4 Model;
+    Model.Identity();
+    Mat4 Camera;
+    Camera.Identity();
+    Mat4 Proj;
+    Proj.Identity();
+    float tmp[3] = { 4,4,0 };
+    Proj.Perspective(10, 10, 10);
+    float z=0.0001f;
+    Object fivestar("bruh",0,renderer,Camera,Proj);
     while (!glfwWindowShouldClose(window))
     {
-        renderer.Clear();
-        renderer.Draw(vao, shader);
+        // IMGUI SETUPPPPPPPPPPPPPPP!!!!!!
+        glfwPollEvents();
+        // Thông báo cho ImGui tính toán delta time, input bàn phím/chuột của frame này
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+        // ==========================================
+        //////////////////////////////////////////////////////////////// 
+        renderer.get()->Clear();
+        fivestar.Render();
+        fivestar.RenderImGui();
 
+        ImGui::Begin("test");
+        ImGui::SliderFloat3("Perspective", tmp, 0.0f, 100.0f);
+        ImGui::DragFloat("Z", &z,0.00001f,-0.001f,0.001f);
+        Vec3 dir(0,0,z);
+        fivestar.Translate(dir);
+        Proj.Perspective(tmp[0], tmp[1], tmp[2]);
+        ImGui::End();
+
+
+
+
+
+        ImGui::Render();
+
+        // Thực sự vẽ ImGui đè lên trên Scene OpenGL vừa vẽ ở Bước 2
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         glfwSwapBuffers(window);
         glfwPollEvents();
     }

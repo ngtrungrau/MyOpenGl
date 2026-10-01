@@ -98,6 +98,7 @@ namespace MyGl
 		Mat4& Scale(const Vec3& scale);
 		//Mat4& Rotate(float angleInDegrees, Vec3 axis);
 		Mat4& Ortho(float left, float right, float bottom, float top, float near, float far);
+		Mat4& Perspective(float FOVx,float FOVy,float near);
 		//Mat4 Inverse();
 
 	};

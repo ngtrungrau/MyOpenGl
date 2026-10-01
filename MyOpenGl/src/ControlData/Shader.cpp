@@ -16,6 +16,96 @@ namespace MyGl
 	{
 		glCall(glDeleteProgram(m_id));
 	}
+	int Shader::GetUniformLocation(const std::string& name)
+	{
+		if (m_UniformLocationCache.find(name) !=m_UniformLocationCache.end())
+		{
+			return m_UniformLocationCache[name];
+		}
+		int location = -1;
+		glCall(location = glGetUniformLocation(m_id, name.c_str()));
+
+		if (location == -1)
+			std::cout << "Warning: uniform '" << name << "' doesn't exist!" << std::endl;
+
+		m_UniformLocationCache[name] = location;
+		return location;
+		
+	}
+	void Shader::SetUniform1i(const std::string& name, int value)
+	{
+		glCall(glUniform1i(GetUniformLocation(name), value));
+	}
+
+	void Shader::SetUniform1f(const std::string& name, float value)
+	{
+		glCall(glUniform1f(GetUniformLocation(name), value));
+	}
+
+	void Shader::SetUniform3f(const std::string& name, float v0, float v1, float v2)
+	{
+		glCall(glUniform3f(GetUniformLocation(name), v0, v1, v2));
+	}
+
+	void Shader::SetUniform3f(const std::string& name, const Vec3& v)
+	{
+		glCall(glUniform3f(GetUniformLocation(name), v.x, v.y, v.z));
+	}
+
+	void Shader::SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3)
+	{
+		glCall(glUniform4f(GetUniformLocation(name), v0, v1, v2, v3));
+	}
+
+	void Shader::SetUniform4f(const std::string& name, const Vec4& v)
+	{
+		glCall(glUniform4f(GetUniformLocation(name), v.x, v.y, v.z, v.w));
+	}
+
+	void Shader::SetUniform4Mat(const std::string& name, const Mat4& mat4)
+	{
+		// Tự động lấy địa chỉ phần tử float đầu tiên của struct Mat4
+		glCall(glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, &mat4.Columns[0].x));
+	}
+
+	// ==========================================
+	// GET UNIFORMS (Return Trực Tiếp - Chuẩn C++)
+	// ==========================================
+
+	int Shader::GetUniform1i(const std::string& name)
+	{
+		int value = 0;
+		glCall(glGetUniformiv(m_id, GetUniformLocation(name), &value));
+		return value;
+	}
+
+	float Shader::GetUniform1f(const std::string& name)
+	{
+		float value = 0.0f;
+		glCall(glGetUniformfv(m_id, GetUniformLocation(name), &value));
+		return value;
+	}
+
+	Vec3 Shader::GetUniform3f(const std::string& name)
+	{
+		Vec3 result;
+		glCall(glGetUniformfv(m_id, GetUniformLocation(name), &result.x));
+		return result;
+	}
+
+	Vec4 Shader::GetUniform4f(const std::string& name)
+	{
+		Vec4 result;
+		glCall(glGetUniformfv(m_id, GetUniformLocation(name), &result.x));
+		return result;
+	}
+
+	Mat4 Shader::GetUniform4Mat(const std::string& name)
+	{
+		Mat4 result;
+		glCall(glGetUniformfv(m_id, GetUniformLocation(name), &result.Columns[0].x));
+		return result;
+	}
 	ShaderProgramSource Shader::ReadShader(const std::string& path)
 	{
 		std::ifstream stream(path);
